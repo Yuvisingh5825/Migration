@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="nk_migration_log_view_list" model="ir.ui.view">
+        <field name="name">nk.migration.log.list</field>
+        <field name="model">nk.migration.log</field>
+        <field name="arch" type="xml">
+            <list create="0" edit="0" decoration-danger="status == 'failed'" decoration-warning="status == 'skipped'" decoration-success="status == 'ok'">
+                <field name="create_date"/>
+                <field name="res_model"/>
+                <field name="source_ref"/>
+                <field name="status"/>
+                <field name="message"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="nk_migration_log_view_search" model="ir.ui.view">
+        <field name="name">nk.migration.log.search</field>
+        <field name="model">nk.migration.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="source_ref"/>
+                <field name="message"/>
+                <filter name="failed" string="Failed" domain="[('status', '=', 'failed')]"/>
+                <filter name="skipped" string="Skipped" domain="[('status', '=', 'skipped')]"/>
+                <filter name="ok" string="Successful" domain="[('status', '=', 'ok')]"/>
+                <group>
+                    <filter name="g_status" string="Status" context="{'group_by': 'status'}"/>
+                    <filter name="g_model" string="Record Type" context="{'group_by': 'res_model'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="nk_migration_run_view_list" model="ir.ui.view">
+        <field name="name">nk.migration.run.list</field>
+        <field name="model">nk.migration.run</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="source_url"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="nk_migration_run_view_form" model="ir.ui.view">
+        <field name="name">nk.migration.run.form</field>
+        <field name="model">nk.migration.run</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_test_connection" type="object" string="1. Test Connection"/>
+                    <button name="action_preview" type="object" string="2. Preview &amp; Validate" class="btn-secondary"/>
+                    <button name="action_start" type="object" string="3. Start Migration" class="btn-primary"
+                            confirm="Start migration? Run on a staging branch first."/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1><field name="name"/></h1>
+                    <group>
+                        <group string="Source Environment (read-only access)">
+                            <field name="source_url" placeholder="https://old-company.odoo.com"/>
+                            <field name="source_db"/>
+                            <field name="source_login"/>
+                            <field name="source_key" password="True"/>
+                        </group>
+                        <group string="Selection">
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="do_sales"/>
+                            <field name="do_purchase"/>
+                            <field name="do_pickings"/>
+                            <field name="do_invoices"/>
+                            <field name="product_match"/>
+                            <field name="duplicate_policy"/>
+                            <field name="batch_size"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Migration Report">
+                            <field name="log_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="nk_migration_run_action" model="ir.actions.act_window">
+        <field name="name">Migration Dashboard</field>
+        <field name="res_model">nk.migration.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="nk_migration_log_action" model="ir.actions.act_window">
+        <field name="name">Migration Report</field>
+        <field name="res_model">nk.migration.log</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="nk_migration_menu_root" name="Data Migration" sequence="90" groups="base.group_system"/>
+    <menuitem id="nk_migration_menu_dashboard" name="Migration Dashboard" parent="nk_migration_menu_root"
+              action="nk_migration_run_action" sequence="1"/>
+    <menuitem id="nk_migration_menu_log" name="Migration Report" parent="nk_migration_menu_root"
+              action="nk_migration_log_action" sequence="2"/>
+</odoo>

@@ -1,0 +1,43 @@
+<section class="container py-4">
+  <h1>Orders Data Migration</h1>
+  <p class="lead">Move sales and purchase orders, with their deliveries, invoices and bills, from another Odoo database into this one. The links between the documents are kept.</p>
+
+  <h2>How it works</h2>
+  <ol>
+    <li><b>Connect</b>: enter the URL, database, login and API key of the source Odoo, then click <i>Test Connection</i>.</li>
+    <li><b>Choose</b>: pick the date range and which records to copy: sales orders, purchase orders, deliveries / receipts, invoices / bills.</li>
+    <li><b>Preview and Validate</b>: a dry run lists problems before anything is created.</li>
+    <li><b>Start Migration</b>: records are created in batches. Click again to continue. Records already migrated are skipped.</li>
+    <li><b>Review the Migration Report</b>: every record is marked Success, Skipped or Failed with a message.</li>
+  </ol>
+
+  <h2>Features</h2>
+  <ul>
+    <li>Sales orders and purchase orders with their lines and taxes</li>
+    <li>Deliveries and receipts linked to the orders</li>
+    <li>Customer invoices and vendor bills linked to the orders, posted when they were posted in the source</li>
+    <li>Products matched by internal reference (or by name), with a safe option for duplicate names</li>
+    <li>Safe to run again: already migrated records are not duplicated</li>
+    <li>Batch size setting to keep each run short</li>
+    <li>Only system administrators can see and use the module</li>
+  </ul>
+
+  <h2>Good to know</h2>
+  <div class="alert alert-warning">
+    <ul class="mb-0">
+      <li>Payments are not migrated. If a source invoice was paid, the report tells you to create the payment manually.</li>
+      <li>Products and contacts are matched in this database, so they should already exist here.</li>
+      <li>The module connects to the source Odoo you enter, over its standard external API, and only reads data from it. No data is sent anywhere else.</li>
+      <li>The API key you enter is saved on the migration record. Delete the record when you are done.</li>
+      <li>Always try it on a test copy of your database first.</li>
+    </ul>
+  </div>
+
+  <h2>Requirements</h2>
+  <p>Odoo 19.0 with Sales, Purchase, Inventory and Accounting installed. The source Odoo must allow external API access and you need an API key for a user there.</p>
+
+  <h2>Support</h2>
+  <p>Questions or problems? Write to <a href="mailto:neemkaroligroup@gmail.com">neemkaroligroup@gmail.com</a>.</p>
+
+  <p class="text-muted">Developed by Neemkaroli Consulting LLP. Licensed under LGPL-3.</p>
+</section>
